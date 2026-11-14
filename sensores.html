@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de sensores - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>3. Gestión de sensores</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">Definición de sensores</a></li>
+        <li><a href="#tipos">Tipos de sensores en dispositivos móviles</a></li>
+        <li><a href="#proceso">Proceso de gestión de sensores</a></li>
+        <li><a href="#ejemplo">Ejemplo completo</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">Definición de sensores</h3>
+    <p>
+      Un <strong>sensor</strong> es un componente que detecta una magnitud física o un cambio en el
+      entorno (movimiento, luz, temperatura, posición, presión, etc.) y lo convierte en una señal
+      que el dispositivo puede leer. Los teléfonos y tabletas incluyen varios sensores que las
+      aplicaciones pueden aprovechar, por ejemplo para girar la pantalla, contar pasos, mostrar un
+      mapa o ajustar el brillo.
+    </p>
+
+    <h3 id="tipos">Tipos de sensores en dispositivos móviles</h3>
+    <p>Android los agrupa en tres categorías:</p>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Categoría</th>
+          <th>Descripción</th>
+          <th>Sensores y uso</th>
+        </tr>
+        <tr>
+          <td><strong>Sensores de movimiento</strong></td>
+          <td>Miden fuerzas de aceleración y rotación en tres ejes (x, y, z).</td>
+          <td>
+            <ul>
+              <li><strong>Acelerómetro:</strong> aceleración; detectar sacudidas, orientación.</li>
+              <li><strong>Giroscopio:</strong> velocidad de rotación; juegos, realidad aumentada.</li>
+              <li><strong>Vector de gravedad</strong> y <strong>aceleración lineal</strong>.</li>
+              <li><strong>Contador de pasos</strong>.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Sensores ambientales</strong></td>
+          <td>Miden condiciones del entorno.</td>
+          <td>
+            <ul>
+              <li><strong>Luz (iluminación):</strong> brillo automático de pantalla.</li>
+              <li><strong>Barómetro (presión):</strong> altitud, clima.</li>
+              <li><strong>Temperatura</strong> y <strong>humedad relativa</strong> (no todos los equipos los tienen).</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Sensores de posición</strong></td>
+          <td>Determinan la posición física u orientación del dispositivo.</td>
+          <td>
+            <ul>
+              <li><strong>Magnetómetro (brújula):</strong> campo magnético terrestre; mapas y navegación.</li>
+              <li><strong>Proximidad:</strong> apaga la pantalla al acercarlo a la oreja en una llamada.</li>
+              <li><strong>Vector de rotación</strong> y orientación.</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <p>Además, hay otros componentes que funcionan como sensores aunque no se manejen igual:</p>
+    <ul>
+      <li><strong>GPS / ubicación:</strong> coordenadas geográficas (se maneja con servicios de ubicación, no con <code>SensorManager</code>).</li>
+      <li><strong>Cámara y micrófono:</strong> captan imagen y sonido.</li>
+      <li><strong>Sensor de huellas / biométricos:</strong> autenticación.</li>
+      <li><strong>Sensores de comunicación:</strong> NFC, Bluetooth, Wi-Fi.</li>
+    </ul>
+
+    <p>
+      También se clasifican como <strong>sensores de hardware</strong> (componentes físicos) y
+      <strong>sensores de software o virtuales</strong> (combinan datos de varios sensores físicos,
+      como la aceleración lineal o el vector de rotación).
+    </p>
+
+    <h3 id="proceso">Proceso de gestión de sensores</h3>
+
+    <h4>1. Habilitación</h4>
+    <ul>
+      <li>Verificar que el sensor existe en el dispositivo (no todos tienen todos los sensores).</li>
+      <li>Declarar los permisos necesarios en el <code>AndroidManifest.xml</code>. Por ejemplo, para el contador de pasos se necesita el permiso de reconocimiento de actividad; para ubicación, los permisos de ubicación.</li>
+      <li>Si el permiso es "peligroso", pedirlo al usuario en tiempo de ejecución.</li>
+      <li>Obtener el <code>SensorManager</code> y el sensor deseado.</li>
+    </ul>
+
+    <h4>2. Obtención de información</h4>
+    <ul>
+      <li>Implementar la interfaz <code>SensorEventListener</code>, con los métodos <code>onSensorChanged()</code> y <code>onAccuracyChanged()</code>.</li>
+      <li>Registrar el listener con <code>registerListener()</code> indicando la frecuencia de muestreo (normal, UI, juego, rápida).</li>
+      <li>Los datos llegan en un objeto <code>SensorEvent</code> (por ejemplo, <code>event.values[0]</code>, <code>[1]</code>, <code>[2]</code>).</li>
+      <li>Cancelar el registro con <code>unregisterListener()</code> cuando la app deja de usarlo (en <code>onPause()</code>) para ahorrar batería.</li>
+    </ul>
+
+    <h4>3. Procesamiento de la información</h4>
+    <ul>
+      <li><strong>Filtrado:</strong> los datos tienen ruido; se usan filtros (por ejemplo, pasa-bajas) para suavizarlos.</li>
+      <li><strong>Conversión:</strong> pasar los valores a unidades útiles (grados, m/s², lux).</li>
+      <li><strong>Interpretación:</strong> detectar eventos, como una sacudida si la aceleración supera cierto umbral.</li>
+      <li><strong>Uso:</strong> mostrar el dato en pantalla, guardarlo o enviarlo a un servidor.</li>
+    </ul>
+
+    <div class="nota">
+      <strong>Buena práctica:</strong> usar la frecuencia de muestreo más baja que sirva para tu
+      caso, y siempre liberar el sensor cuando no se use.
+    </div>
+
+    <h3 id="ejemplo">Ejemplo completo: leer el acelerómetro</h3>
+<pre><code>class MainActivity : AppCompatActivity(), SensorEventListener {
+
+    private lateinit var sensorManager: SensorManager
+    private var acelerometro: Sensor? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // 1. Habilitación
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        acelerometro = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        if (acelerometro == null) {
+            Toast.makeText(this, "No hay acelerómetro", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 2. Obtención: se registra el listener
+        acelerometro?.also {
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        val x = event.values[0]
+        val y = event.values[1]
+        val z = event.values[2]
+
+        // 3. Procesamiento: detectar sacudida
+        val fuerza = Math.sqrt((x * x + y * y + z * z).toDouble())
+        if (fuerza > 20) {
+            Log.d("Sensor", "¡Sacudida detectada!")
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
+}</code></pre>
+
+    <div class="navegacion-pie">
+      <a href="persistencia.html">← Persistencia de datos</a>
+      <a href="multimedia.html">Siguiente: Multimedia →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

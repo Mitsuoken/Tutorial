@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persistencia y acceso a datos - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>2. Persistencia y acceso a datos</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">Definición</a></li>
+        <li><a href="#caracteristicas">Características</a></li>
+        <li><a href="#formas">Formas de persistencia en dispositivos móviles</a></li>
+        <li><a href="#tipos-datos">Tipos de datos almacenables</a></li>
+        <li><a href="#acceso">Mecanismos de control de acceso</a></li>
+        <li><a href="#autenticacion">Autenticación y consumo de servicios web</a></li>
+        <li><a href="#ejemplos">Ejemplos</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">Definición</h3>
+    <p>
+      La <strong>persistencia de datos</strong> es la capacidad de una aplicación para guardar su
+      información de forma que <em>no se pierda</em> al cerrar la app o apagar el dispositivo.
+      El <strong>acceso a datos</strong> son las técnicas y herramientas que usa la aplicación para
+      leer, insertar, modificar y eliminar esa información.
+    </p>
+
+    <h3 id="caracteristicas">Características</h3>
+    <ul>
+      <li><strong>Durabilidad:</strong> los datos siguen existiendo después de cerrar la aplicación.</li>
+      <li><strong>Recuperación:</strong> se pueden consultar después cuando se necesiten.</li>
+      <li><strong>Integridad:</strong> los datos deben mantenerse correctos y consistentes.</li>
+      <li><strong>Seguridad:</strong> se debe controlar quién puede leerlos o modificarlos.</li>
+      <li><strong>Eficiencia:</strong> en un móvil hay que cuidar la batería, el espacio y la velocidad.</li>
+      <li><strong>Disponibilidad sin conexión:</strong> muchas apps deben funcionar aunque no haya internet.</li>
+    </ul>
+
+    <h3 id="formas">Formas de persistencia en dispositivos móviles</h3>
+
+    <h4>a) Archivos</h4>
+    <p>La app guarda información directamente en archivos del dispositivo. En Android hay varias opciones:</p>
+    <ul>
+      <li><strong>SharedPreferences / DataStore:</strong> guardan pares clave-valor pequeños (configuraciones, tema oscuro, si el usuario ya inició sesión).</li>
+      <li><strong>Almacenamiento interno:</strong> archivos privados de la app (<code>filesDir</code>). Otras apps no pueden verlos.</li>
+      <li><strong>Almacenamiento externo / compartido:</strong> fotos, descargas, documentos que el usuario puede ver desde otras apps.</li>
+      <li><strong>Caché:</strong> archivos temporales que el sistema puede borrar.</li>
+    </ul>
+    <p>Formatos de archivo comunes: texto plano, JSON, XML, CSV, imágenes, etc.</p>
+
+    <h4>b) Bases de datos locales</h4>
+    <p>
+      Guardan información estructurada dentro del dispositivo. La más usada es <strong>SQLite</strong>,
+      una base de datos relacional ligera integrada en Android e iOS. Se usan tablas, filas, columnas
+      y consultas SQL. En Android se suele acceder con la biblioteca <strong>Room</strong>, que trabaja
+      encima de SQLite. Otras opciones: Realm, ObjectBox, Core Data (iOS).
+    </p>
+
+    <h4>c) Bases de datos remotas mediante servicios web</h4>
+    <p>
+      Los datos se guardan en un servidor y la app se comunica con él por internet, normalmente con
+      una <strong>API REST</strong> (peticiones HTTP que devuelven JSON). También existen servicios
+      como <strong>Firebase</strong> (Firestore, Realtime Database) que ya incluyen la base de datos
+      en la nube.
+    </p>
+    <ul>
+      <li>Permiten compartir la información entre varios usuarios y dispositivos.</li>
+      <li>Requieren conexión (o una estrategia de sincronización si se trabaja sin conexión).</li>
+    </ul>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Forma</th>
+          <th>Ventajas</th>
+          <th>Desventajas</th>
+        </tr>
+        <tr>
+          <td>Archivos</td>
+          <td>Fáciles de usar; no necesitan servidor.</td>
+          <td>No son buenos para consultas complejas ni muchos datos relacionados.</td>
+        </tr>
+        <tr>
+          <td>Base de datos local</td>
+          <td>Consultas rápidas, funciona sin internet, datos organizados.</td>
+          <td>Solo están en ese dispositivo; hay que manejar migraciones al cambiar la estructura.</td>
+        </tr>
+        <tr>
+          <td>Base de datos remota</td>
+          <td>Datos centralizados y compartidos, respaldo en servidor.</td>
+          <td>Depende de internet, latencia, requiere servidor y seguridad.</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3 id="tipos-datos">Tipos de datos almacenables según la forma de persistencia</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Forma de persistencia</th>
+          <th>Tipos de datos que se pueden guardar</th>
+          <th>Ejemplos</th>
+        </tr>
+        <tr>
+          <td>SharedPreferences / DataStore</td>
+          <td>Tipos primitivos: booleanos, enteros, flotantes, cadenas, conjuntos de cadenas.</td>
+          <td>Nombre de usuario, idioma, modo oscuro.</td>
+        </tr>
+        <tr>
+          <td>Archivos (internos/externos)</td>
+          <td>Texto, JSON, XML, imágenes, audio, video, PDF, datos binarios.</td>
+          <td>Foto tomada, archivo de registro, documento descargado.</td>
+        </tr>
+        <tr>
+          <td>SQLite / Room</td>
+          <td>INTEGER, REAL, TEXT, BLOB y NULL (las fechas y booleanos se guardan como número o texto).</td>
+          <td>Lista de tareas, contactos, productos, historial.</td>
+        </tr>
+        <tr>
+          <td>Servicios web / nube</td>
+          <td>Objetos JSON o XML, documentos, archivos, datos de usuarios.</td>
+          <td>Perfil de usuario, publicaciones, pedidos.</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3 id="acceso">Mecanismos de control de acceso a medios persistentes</h3>
+
+    <h4>1. Biblioteca de clases</h4>
+    <p>
+      Son conjuntos de clases ya hechas que facilitan guardar y leer datos sin escribir todo desde cero.
+      En Android: <code>SharedPreferences</code>, <code>DataStore</code>, <code>File</code>,
+      <code>FileInputStream</code>/<code>FileOutputStream</code>, y las librerías de Jetpack como
+      <strong>Room</strong>. En iOS: <code>UserDefaults</code>, <code>FileManager</code>.
+    </p>
+
+    <h4>2. Clases de SQLite</h4>
+    <p>Android incluye clases para trabajar directamente con SQLite:</p>
+    <ul>
+      <li><code>SQLiteOpenHelper</code>: crea la base de datos y controla sus versiones (<code>onCreate</code>, <code>onUpgrade</code>).</li>
+      <li><code>SQLiteDatabase</code>: permite ejecutar SQL, insertar, actualizar, borrar y consultar.</li>
+      <li><code>ContentValues</code>: guarda los pares columna-valor para insertar o actualizar.</li>
+      <li><code>Cursor</code>: recorre los resultados de una consulta.</li>
+    </ul>
+
+    <h4>3. Mapeo relacional de objetos (ORM)</h4>
+    <p>
+      Un <strong>ORM</strong> (Object-Relational Mapping) convierte automáticamente las filas de las
+      tablas en objetos del lenguaje (y al revés). Así se trabaja con clases en vez de escribir SQL
+      para todo. Ejemplos: <strong>Room</strong> (Android), GreenDAO, Realm, Core Data / SwiftData (iOS).
+      En Room se usan tres componentes principales:
+    </p>
+    <ul>
+      <li><code>@Entity</code>: la clase que representa una tabla.</li>
+      <li><code>@Dao</code>: la interfaz con las operaciones (insertar, consultar, borrar).</li>
+      <li><code>@Database</code>: la clase que une todo y entrega los DAO.</li>
+    </ul>
+
+    <h3 id="autenticacion">Proceso de autenticación y consumo de servicios web en apps móviles</h3>
+    <p><strong>Autenticación</strong> es comprobar quién es el usuario. Un proceso típico es:</p>
+    <ol>
+      <li>El usuario escribe su correo y contraseña en la app.</li>
+      <li>La app envía las credenciales al servidor por <strong>HTTPS</strong>.</li>
+      <li>El servidor las valida y responde con un <strong>token</strong> (por ejemplo un JWT).</li>
+      <li>La app guarda el token de forma segura (por ejemplo con <code>EncryptedSharedPreferences</code>).</li>
+      <li>En cada petición posterior la app manda el token en el encabezado <code>Authorization: Bearer ...</code>.</li>
+      <li>El servidor verifica el token y devuelve los datos solicitados.</li>
+      <li>Si el token expira, la app lo renueva (refresh token) o pide iniciar sesión otra vez.</li>
+    </ol>
+    <p>Otras formas de autenticarse: OAuth 2.0 (iniciar con Google, Facebook), Firebase Authentication, biometría (huella o rostro) como paso adicional.</p>
+
+    <p><strong>Consumo de un servicio web (API REST):</strong></p>
+    <ol>
+      <li>Declarar el permiso de internet en el <code>AndroidManifest.xml</code>.</li>
+      <li>Usar una librería HTTP como Retrofit u OkHttp (las llamadas deben hacerse fuera del hilo principal).</li>
+      <li>Enviar la petición (GET, POST, PUT, DELETE) a la URL del servicio.</li>
+      <li>Recibir la respuesta en JSON y convertirla en objetos (con Gson o Moshi).</li>
+      <li>Mostrar los datos en la interfaz y manejar errores (sin conexión, error 401, 404, 500, etc.).</li>
+    </ol>
+
+    <h3 id="ejemplos">Ejemplos</h3>
+
+    <h4>Ejemplo 1: SharedPreferences</h4>
+<pre><code>val prefs = getSharedPreferences("config", MODE_PRIVATE)
+
+// Guardar
+prefs.edit().putString("usuario", "Ana").putBoolean("modoOscuro", true).apply()
+
+// Leer
+val nombre = prefs.getString("usuario", "")</code></pre>
+
+    <h4>Ejemplo 2: escribir un archivo interno</h4>
+<pre><code>openFileOutput("notas.txt", MODE_PRIVATE).use {
+    it.write("Hola desde un archivo".toByteArray())
+}</code></pre>
+
+    <h4>Ejemplo 3: SQLite con SQLiteOpenHelper</h4>
+<pre><code>class AyudanteBD(context: Context) :
+    SQLiteOpenHelper(context, "tareas.db", null, 1) {
+
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL("CREATE TABLE tareas (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)")
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, viejo: Int, nuevo: Int) {
+        db.execSQL("DROP TABLE IF EXISTS tareas")
+        onCreate(db)
+    }
+}
+
+// Insertar
+val valores = ContentValues().apply { put("titulo", "Estudiar") }
+ayudante.writableDatabase.insert("tareas", null, valores)</code></pre>
+
+    <h4>Ejemplo 4: Room (ORM)</h4>
+<pre><code>@Entity
+data class Tarea(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val titulo: String
+)
+
+@Dao
+interface TareaDao {
+    @Insert
+    suspend fun insertar(tarea: Tarea)
+
+    @Query("SELECT * FROM Tarea")
+    suspend fun obtenerTodas(): List&lt;Tarea&gt;
+
+    @Delete
+    suspend fun borrar(tarea: Tarea)
+}
+
+@Database(entities = [Tarea::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun tareaDao(): TareaDao
+}</code></pre>
+
+    <h4>Ejemplo 5: consumir una API con Retrofit</h4>
+<pre><code>interface ApiServicio {
+    @POST("login")
+    suspend fun iniciarSesion(@Body datos: Credenciales): RespuestaLogin
+
+    @GET("productos")
+    suspend fun productos(@Header("Authorization") token: String): List&lt;Producto&gt;
+}
+
+val retrofit = Retrofit.Builder()
+    .baseUrl("https://api.ejemplo.com/")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+
+val api = retrofit.create(ApiServicio::class.java)</code></pre>
+
+    <div class="navegacion-pie">
+      <a href="control-versiones.html">← Control de versiones</a>
+      <a href="sensores.html">Siguiente: Sensores →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

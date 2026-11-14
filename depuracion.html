@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depuración y seguridad - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>7. Depuración y seguridad</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">¿Qué es la depuración y la seguridad?</a></li>
+        <li><a href="#herramientas">Herramientas de depuración del entorno de desarrollo</a></li>
+        <li><a href="#seguridad">Buenas prácticas de seguridad</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">¿Qué es la depuración y la seguridad?</h3>
+
+    <h4>Depuración (debugging)</h4>
+    <p>
+      La <strong>depuración</strong> es el proceso de encontrar, analizar y corregir errores
+      (<em>bugs</em>) en el código de una aplicación. Consiste en ejecutar la app de forma controlada,
+      observar qué valores tienen las variables, qué línea se ejecuta y por qué algo no funciona como
+      se espera.
+    </p>
+    <p>Tipos de errores comunes:</p>
+    <ul>
+      <li><strong>De sintaxis:</strong> el código está mal escrito y no compila.</li>
+      <li><strong>De ejecución:</strong> la app se cierra al correr (por ejemplo <code>NullPointerException</code>).</li>
+      <li><strong>Lógicos:</strong> la app corre pero da un resultado incorrecto.</li>
+    </ul>
+
+    <h4>Seguridad</h4>
+    <p>
+      La <strong>seguridad</strong> en aplicaciones móviles es el conjunto de prácticas y mecanismos
+      para proteger los datos del usuario, el código y la comunicación con servidores contra accesos no
+      autorizados, robo o modificación de información. Busca garantizar la <strong>confidencialidad</strong>,
+      la <strong>integridad</strong> y la <strong>disponibilidad</strong> de la información.
+    </p>
+
+    <h3 id="herramientas">Herramientas de depuración incluidas en el entorno de desarrollo móvil</h3>
+    <p>En <strong>Android Studio</strong> se encuentran, entre otras:</p>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Herramienta</th>
+          <th>Para qué sirve</th>
+        </tr>
+        <tr>
+          <td><strong>Logcat</strong></td>
+          <td>Muestra los mensajes del sistema y de la app (<code>Log.d</code>, <code>Log.e</code>, etc.) y los errores con su traza. Se puede filtrar por nivel o etiqueta.</td>
+        </tr>
+        <tr>
+          <td><strong>Depurador (Debugger)</strong></td>
+          <td>Permite poner <em>puntos de interrupción</em> (breakpoints), ejecutar paso a paso (step over, step into, step out), ver y modificar variables, y evaluar expresiones.</td>
+        </tr>
+        <tr>
+          <td><strong>Emulador (AVD)</strong></td>
+          <td>Simula dispositivos con distintas versiones de Android, tamaños de pantalla y condiciones (red, batería, ubicación, sensores).</td>
+        </tr>
+        <tr>
+          <td><strong>Layout Inspector</strong></td>
+          <td>Muestra la jerarquía de vistas de la pantalla en ejecución para detectar problemas de diseño.</td>
+        </tr>
+        <tr>
+          <td><strong>Profiler</strong></td>
+          <td>Mide uso de CPU, memoria, red y energía para encontrar fugas de memoria y cuellos de botella.</td>
+        </tr>
+        <tr>
+          <td><strong>Database Inspector</strong></td>
+          <td>Permite ver y consultar las bases de datos SQLite/Room de la app mientras corre.</td>
+        </tr>
+        <tr>
+          <td><strong>Network Inspector</strong></td>
+          <td>Muestra las peticiones de red (URL, respuesta, tiempos).</td>
+        </tr>
+        <tr>
+          <td><strong>ADB (Android Debug Bridge)</strong></td>
+          <td>Herramienta de línea de comandos para comunicarse con el dispositivo: instalar apps, ver logs, copiar archivos.</td>
+        </tr>
+        <tr>
+          <td><strong>Lint</strong></td>
+          <td>Análisis estático que detecta posibles errores, problemas de rendimiento y de seguridad sin ejecutar la app.</td>
+        </tr>
+        <tr>
+          <td><strong>Pruebas (JUnit, Espresso)</strong></td>
+          <td>Pruebas automáticas para encontrar errores antes de publicar.</td>
+        </tr>
+      </table>
+    </div>
+    <p>
+      En <strong>Xcode</strong> (iOS) existen herramientas equivalentes: consola de depuración,
+      breakpoints, View Debugger, Instruments (rendimiento y memoria) y el simulador.
+    </p>
+
+    <h4>Ejemplo: usar Logcat</h4>
+<pre><code>Log.d("Login", "Usuario ingresó: " + usuario)   // depuración
+Log.i("Login", "Inicio de sesión correcto")      // información
+Log.w("Login", "Contraseña muy corta")           // advertencia
+Log.e("Login", "Error de conexión", excepcion)   // error</code></pre>
+
+    <h4>Ejemplo: pasos para usar un breakpoint</h4>
+    <ol>
+      <li>Hacer clic en el margen izquierdo de la línea de código para poner un punto rojo.</li>
+      <li>Ejecutar la app con el botón <em>Debug</em> (el ícono del insecto).</li>
+      <li>Cuando la ejecución llegue a esa línea se detiene; revisar las variables en el panel inferior.</li>
+      <li>Avanzar con <em>Step Over</em> (F8) o <em>Step Into</em> (F7), o continuar con <em>Resume</em>.</li>
+    </ol>
+
+    <h3 id="seguridad">Buenas prácticas de seguridad</h3>
+    <ul>
+      <li>Usar <strong>HTTPS</strong> en todas las comunicaciones con servidores.</li>
+      <li>No guardar contraseñas ni datos sensibles en texto plano; usar <code>EncryptedSharedPreferences</code> o Android Keystore.</li>
+      <li>Pedir solo los <strong>permisos</strong> que realmente se necesitan.</li>
+      <li>No dejar claves de API ni credenciales escritas directamente en el código.</li>
+      <li>Validar siempre los datos que escribe el usuario.</li>
+      <li>Activar la ofuscación y optimización del código con <strong>R8/ProGuard</strong> en la versión de publicación.</li>
+      <li>Usar autenticación segura (tokens, OAuth, biometría) y cerrar sesión cuando expiren.</li>
+      <li>Mantener actualizadas las librerías para corregir vulnerabilidades.</li>
+      <li>Quitar los mensajes de <code>Log</code> con información sensible antes de publicar la app.</li>
+    </ul>
+
+    <div class="navegacion-pie">
+      <a href="librerias.html">← Librerías y toolkits</a>
+      <a href="referencias.html">Siguiente: Referencias →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de versiones - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>1. Control de versiones</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">Definición</a></li>
+        <li><a href="#tipos">Tipos de sistemas de control de versiones</a></li>
+        <li><a href="#comparacion">Características, ventajas y desventajas</a></li>
+        <li><a href="#funcionamiento">Funcionamiento</a></li>
+        <li><a href="#rastreo">Rastreo y gestión de cambios</a></li>
+        <li><a href="#ejemplos">Ejemplos</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">Definición</h3>
+    <p>
+      El <strong>control de versiones</strong> es un sistema que registra los cambios realizados
+      sobre un conjunto de archivos a lo largo del tiempo, de modo que se pueda recuperar una
+      versión específica cuando se necesite. Se usa sobre todo para el código fuente, pero sirve
+      para cualquier tipo de archivo.
+    </p>
+    <p>Con un sistema de control de versiones se puede:</p>
+    <ul>
+      <li>Regresar archivos o todo el proyecto a un estado anterior.</li>
+      <li>Comparar cambios hechos a lo largo del tiempo.</li>
+      <li>Saber quién modificó algo y cuándo.</li>
+      <li>Trabajar en equipo sin sobrescribir el trabajo de los demás.</li>
+      <li>Recuperarse fácilmente si se rompe o se pierde algo.</li>
+    </ul>
+
+    <h3 id="tipos">Tipos de sistemas de control de versiones</h3>
+
+    <h4>a) Sistemas locales</h4>
+    <p>
+      Guardan los cambios en una base de datos dentro de la misma computadora del usuario. Una
+      forma muy básica es copiar carpetas con nombres como "proyecto_v1", "proyecto_v2_final".
+      Un ejemplo de herramienta es <strong>RCS</strong> (Revision Control System), que guarda
+      las diferencias entre versiones de cada archivo.
+    </p>
+
+    <h4>b) Sistemas centralizados (CVCS)</h4>
+    <p>
+      Existe un <strong>servidor central</strong> que guarda todas las versiones, y los
+      desarrolladores descargan (checkout) los archivos que necesitan y suben (commit) sus
+      cambios al servidor. Ejemplos: <strong>CVS</strong>, <strong>Subversion (SVN)</strong> y
+      <strong>Perforce</strong>.
+    </p>
+
+    <h4>c) Sistemas distribuidos (DVCS)</h4>
+    <p>
+      Cada desarrollador tiene una <strong>copia completa del repositorio</strong>, con todo su
+      historial, en su propia computadora. Se sincronizan entre sí mediante un repositorio
+      remoto (por ejemplo GitHub, GitLab o Bitbucket). Ejemplos: <strong>Git</strong>,
+      <strong>Mercurial</strong> y <strong>Bazaar</strong>.
+    </p>
+
+    <h3 id="comparacion">Características, ventajas y desventajas</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Tipo</th>
+          <th>Características</th>
+          <th>Ventajas</th>
+          <th>Desventajas</th>
+        </tr>
+        <tr>
+          <td><strong>Local</strong> (RCS)</td>
+          <td>Todo se guarda en una sola computadora. Sin servidor ni red.</td>
+          <td>
+            <ul>
+              <li>Muy sencillo de usar.</li>
+              <li>No necesita internet.</li>
+              <li>Rápido.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>No sirve para trabajo en equipo.</li>
+              <li>Si falla el disco se pierde todo.</li>
+              <li>Funciones muy limitadas.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Centralizado</strong> (CVS, SVN, Perforce)</td>
+          <td>Un servidor único guarda el historial. Los usuarios solo tienen la versión con la que trabajan.</td>
+          <td>
+            <ul>
+              <li>Control claro de quién accede a qué.</li>
+              <li>Fácil de administrar.</li>
+              <li>Buen manejo de archivos grandes (Perforce).</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Si el servidor cae, nadie puede guardar cambios ni ver el historial.</li>
+              <li>Si el servidor se daña sin respaldo, se pierde el historial.</li>
+              <li>Requiere conexión para casi todo.</li>
+              <li>Ramas más difíciles de manejar.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Distribuido</strong> (Git, Mercurial)</td>
+          <td>Cada usuario tiene el repositorio completo. Se sincroniza con repositorios remotos.</td>
+          <td>
+            <ul>
+              <li>Se puede trabajar sin conexión.</li>
+              <li>Ramas y mezclas (merge) rápidas y baratas.</li>
+              <li>Cada copia sirve como respaldo.</li>
+              <li>Flexible para distintos flujos de trabajo.</li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li>Curva de aprendizaje más alta.</li>
+              <li>Repositorios grandes ocupan más espacio local.</li>
+              <li>Puede haber conflictos de merge que resolver.</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="nota">
+      <strong>Nota:</strong> hoy en día <strong>Git</strong> es el sistema más usado, incluido el
+      desarrollo móvil. Android Studio y Xcode lo tienen integrado.
+    </div>
+
+    <h3 id="funcionamiento">Funcionamiento (ejemplo con Git)</h3>
+    <p>En Git, los archivos pasan por tres áreas principales:</p>
+    <ol>
+      <li><strong>Directorio de trabajo (working directory):</strong> donde se editan los archivos.</li>
+      <li><strong>Área de preparación (staging area):</strong> donde se eligen los cambios que irán en el siguiente commit.</li>
+      <li><strong>Repositorio local (.git):</strong> donde se guardan los commits (las "fotos" del proyecto).</li>
+    </ol>
+    <p>
+      Después los commits se envían a un <strong>repositorio remoto</strong> (GitHub, GitLab, etc.)
+      con <code>push</code> y se traen los cambios de otros con <code>pull</code> o <code>fetch</code>.
+    </p>
+    <p>
+      Cada commit tiene un identificador único (hash), el autor, la fecha, un mensaje y apunta al
+      commit anterior. Así se forma una cadena que representa el historial del proyecto.
+    </p>
+
+    <h3 id="rastreo">Cómo se usa en el rastreo y gestión de cambios</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Acción</th>
+          <th>Comando en Git</th>
+          <th>Para qué sirve</th>
+        </tr>
+        <tr><td>Ver el estado</td><td><code>git status</code></td><td>Muestra qué archivos cambiaron o están preparados.</td></tr>
+        <tr><td>Ver diferencias</td><td><code>git diff</code></td><td>Muestra línea por línea qué se modificó.</td></tr>
+        <tr><td>Ver historial</td><td><code>git log</code></td><td>Lista los commits con autor, fecha y mensaje.</td></tr>
+        <tr><td>Saber quién cambió una línea</td><td><code>git blame archivo</code></td><td>Muestra el autor del último cambio de cada línea.</td></tr>
+        <tr><td>Crear ramas</td><td><code>git branch</code> / <code>git switch</code></td><td>Permite trabajar en una función nueva sin afectar el código principal.</td></tr>
+        <tr><td>Unir ramas</td><td><code>git merge</code></td><td>Integra los cambios de una rama en otra.</td></tr>
+        <tr><td>Deshacer un cambio</td><td><code>git revert</code></td><td>Crea un commit que anula otro anterior.</td></tr>
+        <tr><td>Marcar versiones</td><td><code>git tag v1.0</code></td><td>Etiqueta un punto del historial, por ejemplo una versión publicada.</td></tr>
+      </table>
+    </div>
+    <p>
+      En un proyecto móvil esto ayuda, por ejemplo, a tener una rama <code>main</code> con la versión
+      publicada en la tienda de aplicaciones y ramas <code>feature/...</code> para cada función nueva.
+    </p>
+
+    <h3 id="ejemplos">Ejemplos</h3>
+
+    <h4>Ejemplo 1: iniciar un repositorio y hacer el primer commit</h4>
+<pre><code>git init
+git add .
+git commit -m "Primer commit: proyecto base de la app"</code></pre>
+
+    <h4>Ejemplo 2: conectar con GitHub y subir</h4>
+<pre><code>git remote add origin https://github.com/usuario/mi-app.git
+git branch -M main
+git push -u origin main</code></pre>
+
+    <h4>Ejemplo 3: crear una rama para una función nueva y mezclarla</h4>
+<pre><code>git switch -c feature/login
+# ... se hacen cambios ...
+git add .
+git commit -m "Agrega pantalla de login"
+git switch main
+git merge feature/login</code></pre>
+
+    <h4>Ejemplo 4: ver el historial resumido</h4>
+<pre><code>git log --oneline
+a3f9c21 Agrega pantalla de login
+7b21e0d Primer commit: proyecto base de la app</code></pre>
+
+    <h4>Ejemplo 5: archivo .gitignore para Android</h4>
+<pre><code>*.iml
+.gradle/
+/local.properties
+/.idea/
+/build/
+/app/build/
+.DS_Store</code></pre>
+    <p>
+      El <code>.gitignore</code> evita subir archivos generados o privados (por ejemplo
+      <code>local.properties</code>, que tiene rutas de tu computadora).
+    </p>
+
+    <div class="navegacion-pie">
+      <a href="index.html">← Inicio</a>
+      <a href="persistencia.html">Siguiente: Persistencia de datos →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

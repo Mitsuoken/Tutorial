@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librerías y toolkits - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>6. Librerías y toolkits para desarrollo móvil</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definiciones">¿Qué es una librería y qué es un toolkit?</a></li>
+        <li><a href="#librerias">Librerías de funciones especializadas</a></li>
+        <li><a href="#toolkits">Toolkits aplicables a la programación móvil</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definiciones">¿Qué es una librería y qué es un toolkit?</h3>
+
+    <h4>Librería (biblioteca)</h4>
+    <p>
+      Una <strong>librería</strong> es un conjunto de código ya escrito y probado (funciones, clases,
+      métodos) que se puede reutilizar en distintos proyectos para realizar tareas específicas, sin
+      programarlas desde cero. El programador <em>llama</em> a la librería cuando la necesita. Ejemplo:
+      Retrofit para peticiones web, Glide para imágenes.
+    </p>
+
+    <h4>Toolkit (kit de herramientas)</h4>
+    <p>
+      Un <strong>toolkit</strong> es un conjunto más amplio de herramientas, librerías, componentes de
+      interfaz, utilidades y a veces documentación y emuladores, pensado para construir aplicaciones en
+      una plataforma o con un enfoque determinado. Normalmente ofrece una estructura completa de
+      trabajo. Ejemplo: Android SDK + Jetpack, Flutter, React Native.
+    </p>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th></th>
+          <th>Librería</th>
+          <th>Toolkit</th>
+        </tr>
+        <tr><td>Alcance</td><td>Resuelve una tarea específica.</td><td>Ofrece un conjunto completo para desarrollar.</td></tr>
+        <tr><td>Contenido</td><td>Funciones y clases.</td><td>Librerías, componentes de UI, herramientas, compiladores, emuladores.</td></tr>
+        <tr><td>Control</td><td>El programador decide cuándo usarla.</td><td>Suele marcar la estructura general de la aplicación.</td></tr>
+        <tr><td>Ejemplo</td><td>Gson, Glide, Retrofit</td><td>Flutter, React Native, Android SDK</td></tr>
+      </table>
+    </div>
+
+    <h3 id="librerias">Librerías de funciones especializadas para aplicaciones móviles</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Área</th>
+          <th>Librerías</th>
+          <th>Función</th>
+        </tr>
+        <tr><td>Red / servicios web</td><td>Retrofit, OkHttp, Volley, Alamofire (iOS)</td><td>Hacer peticiones HTTP y consumir APIs REST.</td></tr>
+        <tr><td>JSON</td><td>Gson, Moshi, Kotlin Serialization</td><td>Convertir JSON a objetos y viceversa.</td></tr>
+        <tr><td>Imágenes</td><td>Glide, Picasso, Coil, SDWebImage (iOS)</td><td>Cargar y almacenar en caché imágenes.</td></tr>
+        <tr><td>Base de datos</td><td>Room, Realm, SQLDelight, Core Data (iOS)</td><td>Guardar datos localmente.</td></tr>
+        <tr><td>Inyección de dependencias</td><td>Hilt, Dagger, Koin</td><td>Organizar y desacoplar el código.</td></tr>
+        <tr><td>Concurrencia</td><td>Corrutinas de Kotlin, RxJava, Combine (iOS)</td><td>Tareas asíncronas y en segundo plano.</td></tr>
+        <tr><td>Navegación e interfaz</td><td>Jetpack Compose, Navigation, Material Components</td><td>Pantallas, navegación y componentes visuales.</td></tr>
+        <tr><td>Mapas y ubicación</td><td>Google Maps SDK, Mapbox, Fused Location</td><td>Mostrar mapas y obtener ubicación.</td></tr>
+        <tr><td>Cámara y multimedia</td><td>CameraX, ExoPlayer/Media3, Lottie</td><td>Fotos, video, animaciones.</td></tr>
+        <tr><td>Pruebas</td><td>JUnit, Espresso, Mockito</td><td>Pruebas unitarias y de interfaz.</td></tr>
+        <tr><td>Registro y errores</td><td>Timber, Firebase Crashlytics</td><td>Logs y reporte de fallos.</td></tr>
+      </table>
+    </div>
+    <p>En Android se agregan en el archivo <code>build.gradle</code> (módulo app), por ejemplo:</p>
+<pre><code>dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.room:room-runtime:2.6.1")
+}</code></pre>
+    <p>Las versiones cambian con el tiempo; conviene revisar la más reciente en la documentación de cada librería.</p>
+
+    <h3 id="toolkits">Diferenciar toolkits aplicables a la programación de aplicaciones móviles</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Toolkit</th>
+          <th>Lenguaje</th>
+          <th>Plataformas</th>
+          <th>Características</th>
+        </tr>
+        <tr>
+          <td><strong>Android SDK + Jetpack</strong></td>
+          <td>Kotlin, Java</td>
+          <td>Android</td>
+          <td>Toolkit nativo oficial de Google. Máximo acceso al hardware y mejor rendimiento. Se usa con Android Studio.</td>
+        </tr>
+        <tr>
+          <td><strong>iOS SDK (Xcode, SwiftUI/UIKit)</strong></td>
+          <td>Swift, Objective-C</td>
+          <td>iOS, iPadOS</td>
+          <td>Toolkit nativo de Apple. Requiere una Mac para desarrollar.</td>
+        </tr>
+        <tr>
+          <td><strong>Flutter</strong></td>
+          <td>Dart</td>
+          <td>Android, iOS, web, escritorio</td>
+          <td>Multiplataforma de Google. Una sola base de código, interfaz basada en widgets y buen rendimiento.</td>
+        </tr>
+        <tr>
+          <td><strong>React Native</strong></td>
+          <td>JavaScript / TypeScript</td>
+          <td>Android, iOS</td>
+          <td>De Meta. Usa componentes nativos y React; ideal si ya se sabe JavaScript.</td>
+        </tr>
+        <tr>
+          <td><strong>.NET MAUI (Xamarin)</strong></td>
+          <td>C#</td>
+          <td>Android, iOS, Windows, macOS</td>
+          <td>De Microsoft. Sucesor de Xamarin, se integra con el ecosistema .NET.</td>
+        </tr>
+        <tr>
+          <td><strong>Ionic / Capacitor</strong></td>
+          <td>HTML, CSS, JavaScript</td>
+          <td>Android, iOS, web</td>
+          <td>Apps híbridas basadas en tecnologías web dentro de un contenedor nativo.</td>
+        </tr>
+        <tr>
+          <td><strong>Kotlin Multiplatform</strong></td>
+          <td>Kotlin</td>
+          <td>Android, iOS y otros</td>
+          <td>Comparte la lógica de negocio entre plataformas y mantiene interfaz nativa.</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>
+      <strong>Nativo vs. multiplataforma:</strong> las herramientas nativas dan el mejor rendimiento y
+      acceso completo al dispositivo, pero requieren desarrollar una app por plataforma. Las
+      multiplataforma ahorran tiempo y costo al compartir código, aunque pueden tener limitaciones
+      con funciones muy específicas del dispositivo.
+    </p>
+
+    <div class="navegacion-pie">
+      <a href="servicios.html">← Servicios y notificaciones</a>
+      <a href="depuracion.html">Siguiente: Depuración y seguridad →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

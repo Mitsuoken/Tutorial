@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursos multimedia - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>4. Uso de recursos multimedia</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">Definición</a></li>
+        <li><a href="#tipos">Tipos de recursos multimedia</a></li>
+        <li><a href="#estructura">Estructura del proyecto: dónde se guardan</a></li>
+        <li><a href="#componentes">Componentes de software</a></li>
+        <li><a href="#ejemplos">Ejemplos</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">Definición</h3>
+    <p>
+      Los <strong>recursos multimedia</strong> son los elementos que combinan distintos medios de
+      comunicación (imagen, sonido, video, animación, texto) para hacer una aplicación más atractiva,
+      clara e interactiva. En programación móvil se incluyen dentro del proyecto o se descargan de
+      internet y se reproducen o muestran mediante componentes del sistema o librerías.
+    </p>
+
+    <h3 id="tipos">Tipos de recursos multimedia aplicables a la programación móvil</h3>
+
+    <h4>Imágenes</h4>
+    <p>
+      Formatos comunes: PNG (con transparencia), JPG (fotografías), WebP (más ligero) y SVG/Vector
+      Drawable (gráficos vectoriales que se escalan sin perder calidad). Se usan para íconos, fondos,
+      fotos de perfil, banners, etc. Es importante tener varias densidades de pantalla (mdpi, hdpi, xhdpi...).
+    </p>
+
+    <h4>Audio</h4>
+    <p>
+      Formatos: MP3, OGG, WAV, AAC. Se usa para música de fondo, efectos de sonido, notas de voz,
+      podcasts o alertas.
+    </p>
+
+    <h4>Video</h4>
+    <p>
+      Formatos: MP4 (H.264), WebM, 3GP. Se usa para tutoriales, publicidad, videollamadas o contenido
+      en streaming. Pueden estar dentro de la app o transmitirse desde una URL.
+    </p>
+
+    <h4>Animaciones</h4>
+    <ul>
+      <li><strong>Animaciones de vista (View Animation) y de propiedades (Property Animation):</strong> mover, rotar, escalar o desvanecer elementos.</li>
+      <li><strong>Animaciones de fotogramas (Frame Animation / AnimationDrawable):</strong> una secuencia de imágenes.</li>
+      <li><strong>Transiciones</strong> entre pantallas.</li>
+      <li><strong>Lottie:</strong> animaciones exportadas desde After Effects en formato JSON.</li>
+      <li><strong>GIF animados</strong> y animaciones vectoriales (AnimatedVectorDrawable).</li>
+    </ul>
+
+    <h4>Elementos visuales dinámicos</h4>
+    <p>
+      Son los elementos que cambian o se generan mientras la app corre: gráficas que se actualizan,
+      listas con imágenes que se cargan de internet (RecyclerView), mapas, dibujo en un
+      <code>Canvas</code>, colores y temas que cambian (modo oscuro), vistas creadas desde el código,
+      etc.
+    </p>
+
+    <h3 id="estructura">Elementos de la estructura del proyecto donde se almacenan los recursos</h3>
+    <p>En un proyecto de Android Studio, los recursos están dentro de <code>app/src/main/res/</code>:</p>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Carpeta</th>
+          <th>Contenido</th>
+        </tr>
+        <tr><td><code>res/drawable/</code></td><td>Imágenes (PNG, JPG, WebP), vectores XML y formas. Se pueden hacer variantes por densidad (<code>drawable-hdpi</code>, <code>drawable-xhdpi</code>...).</td></tr>
+        <tr><td><code>res/mipmap/</code></td><td>Íconos de la aplicación (launcher) en distintas densidades.</td></tr>
+        <tr><td><code>res/raw/</code></td><td>Archivos en su formato original: audio y video pequeños (por ejemplo <code>sonido.mp3</code>). Se acceden con <code>R.raw.nombre</code>.</td></tr>
+        <tr><td><code>res/anim/</code></td><td>Animaciones definidas en XML.</td></tr>
+        <tr><td><code>res/animator/</code></td><td>Animaciones de propiedades en XML.</td></tr>
+        <tr><td><code>res/font/</code></td><td>Tipografías (fuentes).</td></tr>
+        <tr><td><code>res/layout/</code></td><td>Diseños de pantallas (XML) que usan los recursos.</td></tr>
+        <tr><td><code>res/values/</code></td><td>Colores, textos, estilos y dimensiones (<code>colors.xml</code>, <code>strings.xml</code>, <code>themes.xml</code>).</td></tr>
+        <tr><td><code>assets/</code> (en <code>src/main/</code>)</td><td>Archivos sin procesar, con estructura libre de carpetas (video, JSON, HTML). Se leen con <code>AssetManager</code>.</td></tr>
+      </table>
+    </div>
+
+    <p>
+      En iOS (Xcode) los recursos se guardan en <strong>Assets.xcassets</strong> (imágenes e íconos) y
+      en el <em>Bundle</em> de la aplicación (audio, video y otros archivos).
+    </p>
+    <p>
+      Cada recurso de <code>res/</code> recibe un identificador automático en la clase <code>R</code>
+      (por ejemplo <code>R.drawable.logo</code>), que se usa en el código y en el XML
+      (<code>@drawable/logo</code>).
+    </p>
+
+    <h3 id="componentes">Componentes de software en el uso de recursos multimedia</h3>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Componente</th>
+          <th>Para qué se usa</th>
+        </tr>
+        <tr><td><code>ImageView</code></td><td>Mostrar imágenes en pantalla.</td></tr>
+        <tr><td>Glide / Picasso / Coil</td><td>Librerías para cargar, redimensionar y guardar en caché imágenes (locales o de internet).</td></tr>
+        <tr><td><code>MediaPlayer</code></td><td>Reproducir audio y video de forma sencilla.</td></tr>
+        <tr><td><code>SoundPool</code></td><td>Reproducir efectos de sonido cortos (juegos).</td></tr>
+        <tr><td><code>VideoView</code></td><td>Reproducir video de forma rápida con controles básicos.</td></tr>
+        <tr><td>ExoPlayer / Media3</td><td>Reproductor avanzado para video y audio, streaming, listas de reproducción.</td></tr>
+        <tr><td><code>MediaRecorder</code> / CameraX</td><td>Grabar audio y video, tomar fotos.</td></tr>
+        <tr><td><code>Animator</code>, <code>ObjectAnimator</code>, <code>AnimationDrawable</code></td><td>Crear animaciones.</td></tr>
+        <tr><td>Lottie (<code>LottieAnimationView</code>)</td><td>Reproducir animaciones JSON.</td></tr>
+        <tr><td><code>Canvas</code> y <code>Paint</code></td><td>Dibujar elementos visuales personalizados.</td></tr>
+        <tr><td><code>AssetManager</code> / <code>Resources</code></td><td>Acceder a los archivos de <code>assets</code> y <code>res</code>.</td></tr>
+      </table>
+    </div>
+
+    <h3 id="ejemplos">Ejemplos</h3>
+
+    <h4>Ejemplo 1: mostrar una imagen</h4>
+<pre><code>&lt;!-- En el XML --&gt;
+&lt;ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/logo" /&gt;</code></pre>
+
+    <h4>Ejemplo 2: cargar una imagen de internet con Glide</h4>
+<pre><code>Glide.with(this)
+    .load("https://ejemplo.com/foto.jpg")
+    .placeholder(R.drawable.cargando)
+    .into(imageView)</code></pre>
+
+    <h4>Ejemplo 3: reproducir un audio guardado en res/raw</h4>
+<pre><code>val reproductor = MediaPlayer.create(this, R.raw.sonido)
+reproductor.start()
+
+// Al terminar de usarlo
+reproductor.release()</code></pre>
+
+    <h4>Ejemplo 4: reproducir un video</h4>
+<pre><code>val videoView = findViewById&lt;VideoView&gt;(R.id.videoView)
+videoView.setVideoURI(Uri.parse("android.resource://" + packageName + "/" + R.raw.mi_video))
+videoView.setMediaController(MediaController(this))
+videoView.start()</code></pre>
+
+    <h4>Ejemplo 5: animación con ObjectAnimator</h4>
+<pre><code>ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f).apply {
+    duration = 1000
+    start()
+}</code></pre>
+
+    <h4>Ejemplo 6: animación en XML (res/anim/desvanecer.xml)</h4>
+<pre><code>&lt;alpha xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromAlpha="0.0"
+    android:toAlpha="1.0"
+    android:duration="800" /&gt;
+
+// En el código
+val anim = AnimationUtils.loadAnimation(this, R.anim.desvanecer)
+imageView.startAnimation(anim)</code></pre>
+
+    <div class="navegacion-pie">
+      <a href="sensores.html">← Sensores</a>
+      <a href="servicios.html">Siguiente: Servicios y notificaciones →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>

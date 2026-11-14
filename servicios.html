@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios y notificaciones - Tutorial</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header>
+    <h1>Tutorial: Desarrollo de Aplicaciones Móviles</h1>
+    <p>Actividad (12/11/2026)</p>
+  </header>
+
+  <nav>
+    <button id="btn-menu">☰ Menú</button>
+    <ul id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="control-versiones.html">Control de versiones</a></li>
+      <li><a href="persistencia.html">Persistencia de datos</a></li>
+      <li><a href="sensores.html">Sensores</a></li>
+      <li><a href="multimedia.html">Multimedia</a></li>
+      <li><a href="servicios.html">Servicios y notificaciones</a></li>
+      <li><a href="librerias.html">Librerías y toolkits</a></li>
+      <li><a href="depuracion.html">Depuración y seguridad</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>5. Servicios y notificaciones</h2>
+
+    <div class="indice">
+      <h3>Contenido</h3>
+      <ul>
+        <li><a href="#definicion">Definición</a></li>
+        <li><a href="#segundo-plano">Tareas en segundo plano</a></li>
+        <li><a href="#notificaciones">Tratamiento de notificaciones</a></li>
+        <li><a href="#implementacion">Proceso de implementación</a></li>
+        <li><a href="#nube">Servicios de cómputo en la nube</a></li>
+      </ul>
+    </div>
+
+    <h3 id="definicion">Definición</h3>
+    <p>
+      Un <strong>servicio</strong> en una aplicación móvil es un componente que realiza trabajo sin
+      mostrar una pantalla al usuario, por ejemplo descargar archivos, reproducir música o sincronizar
+      datos. Las <strong>notificaciones</strong> son mensajes que la app muestra fuera de su interfaz
+      (en la barra de estado y el panel de notificaciones) para informar o avisar al usuario de algo,
+      incluso cuando la app no está abierta.
+    </p>
+
+    <h3 id="segundo-plano">¿Qué son las tareas en segundo plano?</h3>
+    <p>
+      Son procesos que se ejecutan <em>sin que el usuario interactúe con ellos</em> y sin bloquear la
+      pantalla principal. Sirven para operaciones largas o periódicas: sincronizar información, subir
+      fotos, descargar archivos, enviar datos al servidor o revisar nuevos mensajes.
+    </p>
+    <p>
+      Todo el trabajo pesado debe hacerse fuera del <strong>hilo principal</strong> (UI thread); si no,
+      la app se congela y Android puede mostrar el error "La aplicación no responde" (ANR).
+    </p>
+
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Herramienta (Android)</th>
+          <th>Uso</th>
+        </tr>
+        <tr><td>Hilos y <strong>corrutinas de Kotlin</strong></td><td>Tareas cortas mientras la app está abierta.</td></tr>
+        <tr><td><strong>Service</strong></td><td>Componente que corre tareas sin interfaz (música, descargas).</td></tr>
+        <tr><td><strong>Servicio en primer plano (Foreground Service)</strong></td><td>Tareas que el usuario debe notar (reproducir música, navegación GPS). Muestra una notificación permanente.</td></tr>
+        <tr><td><strong>WorkManager</strong></td><td>Tareas diferibles y garantizadas, aunque la app se cierre o el equipo se reinicie (sincronizar, subir registros).</td></tr>
+        <tr><td><strong>AlarmManager</strong></td><td>Tareas a una hora exacta (alarmas, recordatorios).</td></tr>
+        <tr><td><strong>JobScheduler</strong></td><td>Tareas programadas según condiciones (Wi-Fi, carga de batería).</td></tr>
+      </table>
+    </div>
+
+    <div class="nota">
+      <strong>Nota:</strong> las versiones modernas de Android limitan mucho lo que una app puede hacer
+      en segundo plano para ahorrar batería. Por eso se recomienda <strong>WorkManager</strong> para la
+      mayoría de las tareas diferibles.
+    </div>
+
+    <h3 id="notificaciones">Tratamiento de notificaciones en aplicaciones móviles</h3>
+    <p>Tipos de notificaciones:</p>
+    <ul>
+      <li><strong>Locales:</strong> las genera la propia app en el dispositivo (recordatorios, temporizadores, alarmas).</li>
+      <li><strong>Push (remotas):</strong> las envía un servidor a través de un servicio como <strong>Firebase Cloud Messaging (FCM)</strong> en Android o <strong>APNs</strong> en iOS (mensajes nuevos, promociones).</li>
+    </ul>
+    <p>Elementos importantes en Android:</p>
+    <ul>
+      <li><strong>Canal de notificación (NotificationChannel):</strong> obligatorio desde Android 8. Agrupa las notificaciones por tipo y el usuario puede configurarlas.</li>
+      <li><strong>Contenido:</strong> ícono pequeño, título, texto, y opcionalmente imagen, botones de acción y barra de progreso.</li>
+      <li><strong>PendingIntent:</strong> define qué pasa cuando el usuario toca la notificación (abrir una pantalla).</li>
+      <li><strong>Permiso de notificaciones:</strong> desde Android 13 se debe pedir al usuario el permiso <code>POST_NOTIFICATIONS</code>.</li>
+      <li><strong>Importancia:</strong> define si la notificación hace sonido, vibra o aparece en pantalla.</li>
+    </ul>
+
+    <h3 id="implementacion">Proceso de implementación</h3>
+
+    <h4>A) Proveedores de contenido (ContentProvider)</h4>
+    <p>
+      Un <strong>proveedor de contenido</strong> permite que una app <em>comparta sus datos</em> con
+      otras aplicaciones de forma controlada, usando una URI (por ejemplo, los contactos o la galería
+      del teléfono son proveedores de contenido).
+    </p>
+    <ol>
+      <li>Crear una clase que herede de <code>ContentProvider</code> e implementar <code>onCreate</code>, <code>query</code>, <code>insert</code>, <code>update</code>, <code>delete</code> y <code>getType</code>.</li>
+      <li>Definir la URI (autoridad) del proveedor, por ejemplo <code>content://com.ejemplo.app.provider/tareas</code>.</li>
+      <li>Registrarlo en el <code>AndroidManifest.xml</code> con la etiqueta <code>&lt;provider&gt;</code> (y sus permisos).</li>
+      <li>Desde otra parte de la app (o desde otra app con permiso) acceder con un <code>ContentResolver</code>.</li>
+    </ol>
+<pre><code>// Consultar con ContentResolver
+val cursor = contentResolver.query(
+    Uri.parse("content://com.ejemplo.app.provider/tareas"),
+    null, null, null, null
+)</code></pre>
+
+    <h4>B) Tareas en segundo plano (ejemplo con WorkManager)</h4>
+    <ol>
+      <li>Agregar la dependencia de WorkManager en <code>build.gradle</code>.</li>
+      <li>Crear una clase <code>Worker</code> con el trabajo a realizar.</li>
+      <li>Crear la solicitud (<code>OneTimeWorkRequest</code> o <code>PeriodicWorkRequest</code>) con restricciones opcionales.</li>
+      <li>Enviarla a <code>WorkManager</code> para que la ejecute.</li>
+    </ol>
+<pre><code>class SincronizarWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
+    override fun doWork(): Result {
+        // Aquí va el trabajo pesado (descargar, subir datos, etc.)
+        Log.d("Worker", "Sincronizando datos...")
+        return Result.success()
+    }
+}
+
+// Programar la tarea
+val restricciones = Constraints.Builder()
+    .setRequiredNetworkType(NetworkType.CONNECTED)
+    .build()
+
+val trabajo = PeriodicWorkRequestBuilder&lt;SincronizarWorker&gt;(1, TimeUnit.HOURS)
+    .setConstraints(restricciones)
+    .build()
+
+WorkManager.getInstance(this).enqueue(trabajo)</code></pre>
+
+    <h4>C) Notificaciones (ejemplo local)</h4>
+    <ol>
+      <li>Declarar el permiso <code>POST_NOTIFICATIONS</code> en el manifest y pedirlo en ejecución (Android 13+).</li>
+      <li>Crear el canal de notificación.</li>
+      <li>Construir la notificación con <code>NotificationCompat.Builder</code>.</li>
+      <li>Mostrarla con <code>NotificationManagerCompat</code>.</li>
+    </ol>
+<pre><code>// 1. Crear el canal (una vez, por ejemplo al iniciar la app)
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    val canal = NotificationChannel("canal_general", "General", NotificationManager.IMPORTANCE_DEFAULT)
+    getSystemService(NotificationManager::class.java).createNotificationChannel(canal)
+}
+
+// 2. Construir la notificación
+val intent = Intent(this, MainActivity::class.java)
+val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+val notificacion = NotificationCompat.Builder(this, "canal_general")
+    .setSmallIcon(R.drawable.ic_notificacion)
+    .setContentTitle("Recordatorio")
+    .setContentText("Tienes una tarea pendiente")
+    .setContentIntent(pendingIntent)
+    .setAutoCancel(true)
+    .build()
+
+// 3. Mostrarla
+NotificationManagerCompat.from(this).notify(1, notificacion)</code></pre>
+
+    <h3 id="nube">Servicios de cómputo en la nube aplicables a la programación de apps móviles</h3>
+    <p>
+      La <strong>computación en la nube</strong> permite usar servidores, bases de datos y otros
+      servicios por internet sin administrar la infraestructura propia. Para las apps móviles se usa
+      en autenticación, almacenamiento, bases de datos, notificaciones push y lógica de servidor.
+    </p>
+    <div class="tabla-scroll">
+      <table>
+        <tr>
+          <th>Servicio / plataforma</th>
+          <th>Qué ofrece para apps móviles</th>
+        </tr>
+        <tr>
+          <td><strong>Firebase</strong> (Google)</td>
+          <td>Authentication, Firestore y Realtime Database, Cloud Storage, Cloud Messaging (notificaciones push), Cloud Functions, Analytics, Crashlytics.</td>
+        </tr>
+        <tr>
+          <td><strong>Google Cloud Platform</strong></td>
+          <td>Máquinas virtuales, Cloud Run, Cloud Functions, bases de datos, almacenamiento.</td>
+        </tr>
+        <tr>
+          <td><strong>Amazon Web Services (AWS)</strong></td>
+          <td>AWS Amplify, Cognito (usuarios), S3 (archivos), Lambda (funciones), DynamoDB, SNS (notificaciones).</td>
+        </tr>
+        <tr>
+          <td><strong>Microsoft Azure</strong></td>
+          <td>App Service, Azure Functions, Notification Hubs, Cosmos DB, Blob Storage.</td>
+        </tr>
+        <tr>
+          <td><strong>Otros (BaaS)</strong></td>
+          <td>Supabase, Appwrite, Back4App, entre otros.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="navegacion-pie">
+      <a href="multimedia.html">← Multimedia</a>
+      <a href="librerias.html">Siguiente: Librerías y toolkits →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Tutorial de desarrollo móvil &copy; <span id="anio"></span></p>
+  </footer>
+
+  <button id="btn-subir" title="Subir">↑</button>
+  <script src="js/script.js"></script>
+</body>
+</html>
